@@ -20,10 +20,10 @@ public class Member extends Timestamped {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String memberNickname;
+    private String memberEmail;
 
     @Column(nullable = false, unique = true)
-    private String memberEmail;
+    private String memberNickname;
 
     @Column(nullable = false)
     private String memberPassword;
