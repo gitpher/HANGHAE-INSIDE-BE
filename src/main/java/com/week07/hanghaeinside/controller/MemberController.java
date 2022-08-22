@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public class MemberController {
         TokenDto token = memberService.login(loginRequestDto);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAuthorization());
+        headers.add("Authorization", token.getAuthorization());
         headers.add("RefreshToken", token.getRefreshToken());
 
         String nickname = memberService.getNicknameByEmail(loginRequestDto.getEmail());
@@ -51,12 +52,10 @@ public class MemberController {
                 .body(Map.of("nickname", nickname));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal UserDetails userDetails) {
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
 
-        Member member = ((UserDetailsImpl) userDetails).getMember();
-
-        Long memberId = memberService.logout(member);
+        Long memberId = memberService.logout(httpServletRequest);
 
         return ResponseEntity.ok()
                 .body(Map.of("memberId", memberId, "msg", "로그아웃이 완료되었습니다."));

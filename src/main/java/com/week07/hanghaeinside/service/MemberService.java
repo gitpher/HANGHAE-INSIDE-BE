@@ -15,7 +15,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -65,7 +67,16 @@ public class MemberService {
         return tokenProvider.generateTokenDto(authentication);
     }
 
-    public Long logout(Member member) {
+    @Transactional
+    public Long logout(HttpServletRequest httpServletRequest) {
+        if (!tokenProvider.validateToken(httpServletRequest.getHeader("RefreshToken"))) {
+            throw new IllegalArgumentException("Token이 유효하지 않습티다.");
+        }
+        Member member = tokenProvider.getMemberFromAuthentication();
+        if (null == member) {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+        }
+
         refreshTokenRepository.deleteByMember(member);
         return member.getId();
     }
