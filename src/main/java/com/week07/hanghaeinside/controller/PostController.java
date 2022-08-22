@@ -1,7 +1,7 @@
 package com.week07.hanghaeinside.controller;
 
-import com.week07.hanghaeinside.domain.Member;
 import com.week07.hanghaeinside.domain.UserDetailsImpl;
+import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.dto.PostRequestDto;
 import com.week07.hanghaeinside.domain.post.dto.PostResponseDto;
 import com.week07.hanghaeinside.service.PostService;
@@ -11,12 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
@@ -53,21 +51,21 @@ public class PostController {
         return new ResponseEntity<>(Map.of("msg", deleteMsg), HttpStatus.OK);
     }
 
-    // 게시글 전체 조회
-    @GetMapping("/posts")
-    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
-        // size = -한 페이지당 보여질 개수
-        Page<PostResponseDto> posts = postService.findAllPost(pageable);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
-
-
-    // 게시글 상세 조회
-    @GetMapping("/posts/{postId}")
-    public ResponseEntity<?> findPost(@PathVariable Long postId){
-
-        return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
-    }
+//    // 게시글 전체 조회
+//    @GetMapping("/posts")
+//    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
+//        // size = -한 페이지당 보여질 개수
+//        Page<PostResponseDto> posts = postService.findAllPost(pageable);
+//        return new ResponseEntity<>(posts, HttpStatus.OK);
+//    }
+//
+//
+//    // 게시글 상세 조회
+//    @GetMapping("/posts/{postId}")
+//    public ResponseEntity<?> findPost(@PathVariable Long postId){
+//
+//        return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
+//    }
 
 
 }

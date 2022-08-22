@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UnHeartRepository extends JpaRepository<UnHeart, Long> {
-    Optional<UnHeart> findByPostIdAndMember(Long postId, Member member);
+    Optional<UnHeart> findByPostIdAndUnHeartBy(Long postId, String memberNickname);
 
     Long countAllByPostId(Long postId);
 }

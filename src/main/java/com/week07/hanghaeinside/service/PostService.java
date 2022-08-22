@@ -1,23 +1,16 @@
 package com.week07.hanghaeinside.service;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.week07.hanghaeinside.domain.Member;
+import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.Post;
 import com.week07.hanghaeinside.domain.post.dto.PostRequestDto;
-import com.week07.hanghaeinside.domain.post.dto.PostResponseDto;
 import com.week07.hanghaeinside.repository.PostRepository;
 import com.week07.hanghaeinside.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,7 +51,7 @@ public class PostService {
 
         Post post = Post.builder()
                 .title(postRequestDto.getTitle())
-                .createdById(member.getNickname())
+                .createdById(member.getMemberNickname())
                 .content(postRequestDto.getContent())
                 .postImg(imgUrl)
                 .build();

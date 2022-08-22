@@ -1,9 +1,9 @@
 package com.week07.hanghaeinside.domain.post;
 
 
-import com.week07.hanghaeinside.domain.Member;
 import com.week07.hanghaeinside.domain.Timestamped;
 import com.week07.hanghaeinside.domain.comment.Comment;
+import com.week07.hanghaeinside.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

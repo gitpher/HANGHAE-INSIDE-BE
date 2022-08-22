@@ -4,6 +4,7 @@ import com.week07.hanghaeinside.domain.heart.Heart;
 import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.Post;
 import com.week07.hanghaeinside.domain.unheart.UnHeart;
+import com.week07.hanghaeinside.jwt.TokenProvider;
 import com.week07.hanghaeinside.repository.HeartRepository;
 import com.week07.hanghaeinside.repository.PostRepository;
 import com.week07.hanghaeinside.repository.UnHeartRepository;
@@ -22,6 +23,7 @@ public class HeartService {
     private final PostRepository postRepository;
     private final HeartRepository heartRepository;
     private final UnHeartRepository unHeartRepository;
+    private final TokenProvider tokenProvider;
 
     @Transactional
     //게시글 좋아요 메소드
@@ -39,7 +41,7 @@ public class HeartService {
         if (null == member) {
             throw new IllegalArgumentException("Token이 유효하지 않습니다.");
         }
-        Optional<Heart> optionalHeart = heartRepository.findByPostIdAndMember(postId, member);
+        Optional<Heart> optionalHeart = heartRepository.findByPostIdAndHeartBy(postId, member.getMemberNickname());
         if (optionalHeart.isPresent()) {
             return ResponseEntity.ok().body(Map.of("msg","이미 추천을 했습니다."));
         } else {
@@ -70,7 +72,7 @@ public class HeartService {
         if (null == member) {
             throw new IllegalArgumentException("Token이 유효하지 않습니다.");
         }
-        Optional<UnHeart> optionalUnHeart = unHeartRepository.findByPostIdAndMember(postId, member);
+        Optional<UnHeart> optionalUnHeart = unHeartRepository.findByPostIdAndUnHeartBy(postId, member.getMemberNickname());
         if(optionalUnHeart.isPresent()){
             return ResponseEntity.ok().body(Map.of("msg","이미 비추천을 했습니다."));
         }else{
