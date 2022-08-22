@@ -27,8 +27,7 @@ public class CommentService {
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
         Comment comment = Comment.builder()
-//                .post(post)
-                .content(commentRequestDto.getContent())
+                .post(post)
                 .nickname(commentRequestDto.getNickname())
                 .password(commentRequestDto.getPassword())
                 .content(commentRequestDto.getContent())
@@ -39,13 +38,11 @@ public class CommentService {
     }
 
     //댓글 조회 메소드(특정 게시글의 댓글 목록 전체 조회)
-    //::TODO 댓글 조회 메소드 내 대댓글 목록 추가
     public CommentListResponseDto getComment(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
         List<Comment> commentList = commentRepository.findAllByPostId(postId);
-
 
         return CommentListResponseDto.builder()
                 .commentList(commentList)
@@ -84,18 +81,14 @@ public class CommentService {
       Comment comment =  commentRepository.findById(commentId).orElseThrow(
               ()-> new IllegalArgumentException("존재하지 않는 댓글입니다.")
       );
-      if(comment.getPassword().equals(commentPasswordDto)){
-          return true;
-      }else {
-          return false;
-      }
+        return comment.getPassword().equals(commentPasswordDto.getPassword());
     }
 
     //공통 작업(responseDto build 작업) 메소드화
     private CommentResponseDto buildCommentResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .id(comment.getId())
-//                .postId(comment.getPost().getId())
+                .postId(comment.getPost().getId())
                 .nickname(comment.getNickname())
                 .password(comment.getPassword())
                 .content(comment.getContent())
