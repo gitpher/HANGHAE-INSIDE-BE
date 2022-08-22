@@ -88,16 +88,25 @@ public class PostService {
 
         Page<Post> postList = postRepository.findAllByOrderByCreatedAtDesc(pageable);
 
-        Page<PostResponseDto> postResponseDtos =
+        Page<PostResponseDto> postResponseDtos = convertToPostResposeDto(postList);
+
+        return postResponseDtos;
 
     }
 
-    // 상세 조회
-    public Object findPost(Long postId) {
-
-
+    private Page<PostResponseDto> convertToPostResposeDto(Page<Post> postList) {
     }
-*/
+
+
+        private Page<PostResponseDto> convertToPostResposeDto(Page<Post> postList) {
+        }
+
+        // 상세 조회
+        public Object findPost(Long postId) {
+
+
+        }
+    */
     @Transactional(readOnly = true)
     public Post isPresentPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
