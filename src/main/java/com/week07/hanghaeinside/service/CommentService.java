@@ -69,14 +69,11 @@ public class CommentService {
     }
 
     //댓글 삭제 메소드
-    public void deleteComment(Long commentId, CommentRequestDto commentRequestDto){
+    public void deleteComment(Long commentId, CommentPasswordDto commentPasswordDto){
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 ()-> new IllegalArgumentException("존재하지 않는 댓글입니다.")
         );
-        if(!comment.getNickname().equals(commentRequestDto.getNickname())){
-            throw new IllegalArgumentException("작성자가 일치하지 않습니다.");
-        }
-        if(!comment.getPassword().equals(commentRequestDto.getPassword())){
+        if(!comment.getPassword().equals(commentPasswordDto.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         commentRepository.delete(comment);
