@@ -82,7 +82,7 @@ public class PostService {
         return "게시물이 삭제되었습니다";
 
     }
-
+/*
     // 전체 조회
     public Page<PostResponseDto> findAllPost(Pageable pageable) {
 
@@ -97,7 +97,7 @@ public class PostService {
 
 
     }
-
+*/
     @Transactional(readOnly = true)
     public Post isPresentPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
