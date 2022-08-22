@@ -3,6 +3,8 @@ package com.week07.hanghaeinside.service;
 import com.week07.hanghaeinside.domain.TokenDto;
 import com.week07.hanghaeinside.domain.UserDetailsImpl;
 import com.week07.hanghaeinside.domain.member.Member;
+import com.week07.hanghaeinside.domain.member.dto.CheckEmailRequestDto;
+import com.week07.hanghaeinside.domain.member.dto.CheckNicknameRequestDto;
 import com.week07.hanghaeinside.domain.member.dto.LoginRequestDto;
 import com.week07.hanghaeinside.domain.member.dto.RegisterRequestDto;
 import com.week07.hanghaeinside.jwt.TokenProvider;
@@ -13,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,11 +34,11 @@ public class MemberService {
 
     public Long register(RegisterRequestDto registerRequestDto) {
 
-        String password = passwordEncoder.encode(registerRequestDto.getMemberPassword());
+        String password = passwordEncoder.encode(registerRequestDto.getPassword());
 
         Member member = Member.builder()
-                .memberEmail(registerRequestDto.getMemberEmail())
-                .memberNickname(registerRequestDto.getMemberNickname())
+                .memberEmail(registerRequestDto.getEmail())
+                .memberNickname(registerRequestDto.getNickname())
                 .memberPassword(password)
                 .build();
 
@@ -44,14 +48,14 @@ public class MemberService {
 
     public TokenDto login(LoginRequestDto loginRequestDto) {
 
-        String memberEmail = loginRequestDto.getMemberEmail();
+        String memberEmail = loginRequestDto.getEmail();
 
         // 아이디와 비밀번호 검증
         Member member = memberRepository.findByMemberEmail(memberEmail)
                 .orElseThrow(() -> {
                     throw new IllegalArgumentException("아이디를 확인해주세요.");
                 });
-        if (!passwordEncoder.matches(loginRequestDto.getMemberPassword(), member.getMemberPassword())) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getMemberPassword())) {
             throw new IllegalArgumentException("비밀번호를 확인해주세요.");
         }
 
@@ -66,12 +70,20 @@ public class MemberService {
         return member.getId();
     }
 
-    public boolean checkEmail(String memberEmail) {
-        return memberRepository.existsByMemberEmail(memberEmail);
+    public boolean checkEmail(CheckEmailRequestDto checkEmailRequestDto) {
+        return memberRepository.existsByMemberEmail(checkEmailRequestDto.getEmail());
     }
 
     // 닉네임 중복 체크
-    public boolean checkNickname(String memberNickname) {
-        return memberRepository.existsByMemberNickname(memberNickname);
+    public boolean checkNickname(CheckNicknameRequestDto checkNicknameRequestDto) {
+        return memberRepository.existsByMemberNickname(checkNicknameRequestDto.getNickname());
+    }
+
+    public String getNicknameByEmail(String email) {
+        Member member = memberRepository.findByMemberEmail(email)
+                .orElseThrow(()-> {
+                    throw new IllegalArgumentException("존재하지 않는 이메일입니다.");
+                });
+        return member.getMemberNickname();
     }
 }

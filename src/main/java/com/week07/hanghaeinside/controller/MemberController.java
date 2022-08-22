@@ -3,6 +3,8 @@ package com.week07.hanghaeinside.controller;
 import com.week07.hanghaeinside.domain.TokenDto;
 import com.week07.hanghaeinside.domain.UserDetailsImpl;
 import com.week07.hanghaeinside.domain.member.Member;
+import com.week07.hanghaeinside.domain.member.dto.CheckEmailRequestDto;
+import com.week07.hanghaeinside.domain.member.dto.CheckNicknameRequestDto;
 import com.week07.hanghaeinside.domain.member.dto.LoginRequestDto;
 import com.week07.hanghaeinside.domain.member.dto.RegisterRequestDto;
 import com.week07.hanghaeinside.service.MemberService;
@@ -24,7 +26,7 @@ public class MemberController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequestDto registerRequestDto) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequestDto registerRequestDto) {
 
         Long memberId = memberService.register(registerRequestDto);
 
@@ -34,17 +36,19 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
 
         TokenDto token = memberService.login(loginRequestDto);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token.getAuthorization());
-        headers.add("Refresh-Token", token.getRefreshToken());
+        headers.add("RefreshToken", token.getRefreshToken());
+
+        String nickname = memberService.getNicknameByEmail(loginRequestDto.getEmail());
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(Map.of("msg", "로그인이 완료되었습니다."));
+                .body(Map.of("nickname", nickname));
     }
 
     @PostMapping("/logout")
@@ -59,15 +63,15 @@ public class MemberController {
 
     }
 
-    @GetMapping("/idCheck/{memberEmail}")
-    public ResponseEntity<Boolean> checkEmail(@PathVariable String memberEmail){
+    @PostMapping("/emailCheck")
+    public ResponseEntity<Boolean> checkEmail(@RequestBody CheckEmailRequestDto checkEmailRequestDto){
 
-        return ResponseEntity.ok(memberService.checkEmail(memberEmail));
+        return ResponseEntity.ok(memberService.checkEmail(checkEmailRequestDto));
     }
 
-    @GetMapping("/nicknameCheck/{memberNickname}")
-    public ResponseEntity<Boolean> checkNickname(@PathVariable String memberNickname){
+    @PostMapping("/nicknameCheck")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody CheckNicknameRequestDto checkNicknameRequestDto){
 
-        return ResponseEntity.ok(memberService.checkNickname(memberNickname));
+        return ResponseEntity.ok(memberService.checkNickname(checkNicknameRequestDto));
     }
 }

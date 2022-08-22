@@ -37,25 +37,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // Origin
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        // Method
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        // Header
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(corsConfigurationSource());
+        http.cors();
+
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
 
@@ -72,6 +57,8 @@ public class SecurityConfig {
 
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/login").permitAll()
+            .antMatchers("/api/emailCheck").permitAll()
+            .antMatchers("/api/nicknameCheck").permitAll()
 
             .antMatchers( "/api/posts/**").permitAll()
             .antMatchers( "/api/comments/**").permitAll()
