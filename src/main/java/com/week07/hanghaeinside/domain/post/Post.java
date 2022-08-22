@@ -11,17 +11,32 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import javax.persistence.*;
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = true)
+    private Long heartCnt;
+
+    @Column(nullable = true)
+    private Long unHeartCnt;
+
+    public void updateHeart(Long heartCnt){
+        this.heartCnt = heartCnt;
+    }
+
+    public void updateUnHeart(Long unHeartCnt){
+        this.unHeartCnt = unHeartCnt;
+    }
 
     // 작성자
     private String createdById;
@@ -39,39 +54,27 @@ public class Post extends Timestamped {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
     private List<Comment> comments;
 
-    @Column
-    private Long heart;
 
-    @Column
-    private Long unHeart;
 
-    public void updateHeart(Long heart){
-        this.heart = heart;
-    }
-
-    public void updateUnHeart(Long heart){
-        this.heart = heart;
-    }
-
-    public Post(String title, String createdById,String content, String postImg, Long heart, Long unHeart){
+    public Post(String title, String createdById,String content, String postImg, Long heartCnt, Long unHeartCnt){
         this.title = title;
         this.createdById = createdById;
         this.content = content;
         this.postImg = postImg;
-        this.heart = heart;
-        this.unHeart = unHeart;
+        this.heartCnt = heartCnt;
+        this.unHeartCnt = unHeartCnt;
     }
 
-    public Post(String title, String createdById,String content, Long heart, Long unHeart){
+    public Post(String title, String createdById,String content, Long heartCnt, Long unHeartCnt){
         this.title = title;
         this.createdById = createdById;
         this.content = content;
-        this.heart = heart;
-        this.unHeart = unHeart;
+        this.heartCnt = heartCnt;
+        this.unHeartCnt = unHeartCnt;
     }
 
     public boolean validateMember(Member member) {
-        return !this.createdById.equals(member.getNickname());
+        return !this.createdById.equals(member.getMemberNickname());
     }
 
 
