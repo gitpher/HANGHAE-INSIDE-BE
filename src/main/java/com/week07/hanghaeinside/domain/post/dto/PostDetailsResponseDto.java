@@ -8,21 +8,17 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
-public class PostResponseDto {
+public class PostDetailsResponseDto {
     private Long postId;
     private String nickname;
     private String title;
+    private String content;
     private String postImg;
     private LocalDateTime createAt;
+    private Long commentCnt;
     private Long viewCnt;
     private Long heartCnt;
-    private Long unHeartCnt;
-
-
-
-
-
 }
