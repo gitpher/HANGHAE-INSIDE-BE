@@ -3,10 +3,12 @@ package com.week07.hanghaeinside.domain.post.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@NoArgsConstructor  // 기본 생성자를 만들어줌
+/*@Setter
+@NoArgsConstructor  // 기본 생성자를 만들어줌*/
 @AllArgsConstructor // 모든 생성자를 만들어줌
 public class PostRequestDto {
 
