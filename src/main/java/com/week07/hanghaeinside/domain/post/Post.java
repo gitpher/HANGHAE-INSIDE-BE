@@ -30,6 +30,9 @@ public class Post extends Timestamped {
     @Column(nullable = true)
     private Long unHeartCnt;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int viewCnt;
+
     public void updateHeart(Long heartCnt){
         this.heartCnt = heartCnt;
     }

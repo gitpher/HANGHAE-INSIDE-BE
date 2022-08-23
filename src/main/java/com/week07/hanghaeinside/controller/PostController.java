@@ -4,6 +4,7 @@ import com.week07.hanghaeinside.domain.UserDetailsImpl;
 import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.dto.PostRequestDto;
 import com.week07.hanghaeinside.domain.post.dto.PostResponseDto;
+import com.week07.hanghaeinside.repository.MemberRepository;
 import com.week07.hanghaeinside.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,6 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
-
     // 게시글 생성
     @PostMapping("/posts")
     public ResponseEntity<?> createPost(@ModelAttribute PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
@@ -51,21 +51,21 @@ public class PostController {
         return new ResponseEntity<>(Map.of("msg", deleteMsg), HttpStatus.OK);
     }
 
-//    // 게시글 전체 조회
-//    @GetMapping("/posts")
-//    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
-//        // size = -한 페이지당 보여질 개수
-//        Page<PostResponseDto> posts = postService.findAllPost(pageable);
-//        return new ResponseEntity<>(posts, HttpStatus.OK);
-//    }
-//
-//
-//    // 게시글 상세 조회
-//    @GetMapping("/posts/{postId}")
-//    public ResponseEntity<?> findPost(@PathVariable Long postId){
-//
-//        return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
-//    }
+    // 게시글 전체 조회
+    @GetMapping("/posts")
+    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
+        // size = -한 페이지당 보여질 개수
+        Page<PostResponseDto> posts = postService.findAllPost(pageable);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+
+    // 게시글 상세 조회
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<?> findPost(@PathVariable Long postId){
+        postService.updateView(postId); // view ++
+        return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
+    }
 
 
 }

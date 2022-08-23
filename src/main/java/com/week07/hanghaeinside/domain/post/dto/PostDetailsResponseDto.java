@@ -18,7 +18,7 @@ public class PostDetailsResponseDto {
     private String content;
     private String postImg;
     private LocalDateTime createAt;
-    private Long commentCnt;
-    private Long viewCnt;
+    private int viewCnt;
     private Long heartCnt;
+    private Long unHeartCnt;
 }
