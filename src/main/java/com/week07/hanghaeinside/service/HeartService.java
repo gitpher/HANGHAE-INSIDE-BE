@@ -48,11 +48,11 @@ public class HeartService {
             Heart heart = Heart.builder()
                     .post(post)
                     .heartBy(member.getMemberNickname())
-                    .postHeart(1L)
+                    .postHeart(1)
                     .build();
             heartRepository.save(heart);
         }
-        Long heartCnt = heartRepository.countAllByPostId(post.getId());
+        int heartCnt = heartRepository.countAllByPostId(post.getId());
         post.updateHeart(heartCnt);
         return ResponseEntity.ok().body(Map.of("msg","추천이 완료되었습니다."));
     }
@@ -78,12 +78,12 @@ public class HeartService {
         }else{
             UnHeart unHeart = UnHeart.builder()
                     .post(post)
-                    .postUnHeart(1L)
+                    .postUnHeart(1)
                     .unHeartBy(member.getMemberNickname())
                     .build();
             unHeartRepository.save(unHeart);
         }
-        Long unHeartCnt = unHeartRepository.countAllByPostId(post.getId());
+        int unHeartCnt = unHeartRepository.countAllByPostId(post.getId());
         post.updateUnHeart(unHeartCnt);
         return ResponseEntity.ok().body(Map.of("msg","비추천이 완료되었습니다."));
     }

@@ -121,15 +121,14 @@ public class PostService {
         return new PageImpl<>(posts,postList.getPageable(),postList.getTotalElements());
     }
 
-        // 상세 조회
-        public PostDetailsResponseDto findPost(Long postId) {
+    // 상세 조회
+    public PostDetailsResponseDto findPost(Long postId) {
 
         Post post = isPresentPost(postId);
 
         return getPostDetailsResponseDto(post);
 
-
-        }
+    }
 
     private PostDetailsResponseDto getPostDetailsResponseDto(Post post) {
 
@@ -144,8 +143,6 @@ public class PostService {
                 .viewCnt(post.getViewCnt())
                 .unHeartCnt(post.getUnHeartCnt())
                 .build();
-
-
     }
 
     @Transactional
@@ -162,7 +159,7 @@ public class PostService {
 
     // 개념글 조회
     public Page<PostResponseDto> findAllPostTop(Pageable pageable) {
-        Long heartCnt = 10L;
+        int heartCnt = 10;
 
         Page<Post> postList = postRepository.findAllByHeartCntGreaterThanOrderByCreatedAtDesc(heartCnt, pageable);
 

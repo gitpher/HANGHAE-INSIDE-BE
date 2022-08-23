@@ -23,7 +23,7 @@ public class UnHeart {
     private Post post;
 
     @Column
-    private Long postUnHeart;
+    private int postUnHeart;
 
     //싫어요 누른 memberNickname
     @Column

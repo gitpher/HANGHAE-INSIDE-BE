@@ -23,7 +23,7 @@ public class Heart {
     private Post post;
 
     @Column
-    private Long postHeart;
+    private int postHeart;
 
     //좋아요 누른 memberNickname
     @Column(nullable = false)

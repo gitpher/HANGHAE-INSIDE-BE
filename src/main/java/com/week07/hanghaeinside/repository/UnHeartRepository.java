@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface UnHeartRepository extends JpaRepository<UnHeart, Long> {
     Optional<UnHeart> findByPostIdAndUnHeartBy(Long postId, String memberNickname);
 
-    Long countAllByPostId(Long postId);
+    int countAllByPostId(Long postId);
 }

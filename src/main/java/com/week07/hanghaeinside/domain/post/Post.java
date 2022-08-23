@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,20 +25,20 @@ public class Post extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
-    private Long heartCnt;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int heartCnt;
 
-    @Column(nullable = true)
-    private Long unHeartCnt;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int unHeartCnt;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int viewCnt;
 
-    public void updateHeart(Long heartCnt){
+    public void updateHeart(int heartCnt){
         this.heartCnt = heartCnt;
     }
 
-    public void updateUnHeart(Long unHeartCnt){
+    public void updateUnHeart(int unHeartCnt){
         this.unHeartCnt = unHeartCnt;
     }
 
@@ -59,7 +60,7 @@ public class Post extends Timestamped {
 
 
 
-    public Post(String title, String createdById,String content, String postImg, Long heartCnt, Long unHeartCnt){
+    public Post(String title, String createdById, String content, String postImg, int heartCnt, int unHeartCnt){
         this.title = title;
         this.createdById = createdById;
         this.content = content;
@@ -68,7 +69,7 @@ public class Post extends Timestamped {
         this.unHeartCnt = unHeartCnt;
     }
 
-    public Post(String title, String createdById,String content, Long heartCnt, Long unHeartCnt){
+    public Post(String title, String createdById, String content, int heartCnt, int unHeartCnt){
         this.title = title;
         this.createdById = createdById;
         this.content = content;
