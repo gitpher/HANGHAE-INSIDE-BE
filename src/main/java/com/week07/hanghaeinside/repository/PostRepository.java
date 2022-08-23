@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
+
+    Page<Post> findAllByHeartCntGreaterThanOrderByCreatedAtDesc(Long heartCnt, Pageable pageable);
+
+
     @Modifying
     @Query("update Post p set p.viewCnt = p.viewCnt + 1 where p.id = :id")
     int updateView(Long id);

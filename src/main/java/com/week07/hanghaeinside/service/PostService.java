@@ -4,9 +4,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.week07.hanghaeinside.domain.comment.Comment;
-import com.week07.hanghaeinside.domain.comment.dto.CommentListResponseDto;
-import com.week07.hanghaeinside.domain.comment.dto.CommentResponseDto;
 import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.Post;
 import com.week07.hanghaeinside.domain.post.dto.PostDetailsResponseDto;
@@ -23,14 +20,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -128,7 +123,7 @@ public class PostService {
 
         // 상세 조회
         public PostDetailsResponseDto findPost(Long postId) {
-        
+
         Post post = isPresentPost(postId);
 
         return getPostDetailsResponseDto(post);
@@ -165,6 +160,33 @@ public class PostService {
         return optionalPost.orElseThrow(() -> new IllegalArgumentException("등록되지 않은 게시물입니다."));
     }
 
+    // 개념글 조회
+    public Page<PostResponseDto> findAllPostTop(Pageable pageable) {
+        Long heartCnt = 10L;
 
+        Page<Post> postList = postRepository.findAllByHeartCntGreaterThanOrderByCreatedAtDesc(heartCnt, pageable);
+
+        return convertToResponseDto(postList);
+    }
+
+    private Page<PostResponseDto> convertToResponseDto(Page<Post> postList) {
+        List<PostResponseDto> posts = new ArrayList<>();
+
+        for (Post post : postList) {
+            posts.add(
+                    PostResponseDto.builder()
+                            .postId(post.getId())
+                            .nickname(post.getCreatedById())
+                            .title(post.getTitle())
+                            .postImg(post.getPostImg())
+                            .createAt(post.getCreatedAt())
+                            .viewCnt(post.getViewCnt())
+                            .heartCnt(post.getHeartCnt())
+                            .unHeartCnt(post.getUnHeartCnt())
+                            .build()
+            );
+        }
+        return new PageImpl(posts, postList.getPageable(), postList.getTotalElements());
+    }
 
 }

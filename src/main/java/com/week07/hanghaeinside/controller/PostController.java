@@ -37,16 +37,16 @@ public class PostController {
         // Map.of 에는  key와 value를 최대 10개 까지 넣을 수 있는 메소드를 지원
         //Key를 통해 Value를 찾는다.
         //Key는 중복될 수 없지만, Value는 중복될 수 있다.
-        return ResponseEntity.ok(Map.of("postId",postId));
+        return ResponseEntity.ok(Map.of("postId", postId));
 
     }
 
     // 게시글 삭제
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<?> deletePost(@PathVariable Long postId,  @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetails userDetails) {
         Member member = ((UserDetailsImpl) userDetails).getMember();
 
-        String deleteMsg = postService.deletePost(postId,member);
+        String deleteMsg = postService.deletePost(postId, member);
 
         return new ResponseEntity<>(Map.of("msg", deleteMsg), HttpStatus.OK);
     }
@@ -67,5 +67,10 @@ public class PostController {
         return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
     }
 
+    @GetMapping("/posts/top")
+    public ResponseEntity<?> findAllPostTop(@PageableDefault(size = 12) Pageable pageable) {
+        Page<PostResponseDto> postResponseDtos = postService.findAllPostTop(pageable);
+        return ResponseEntity.ok().body(postResponseDtos);
+    }
 
 }
