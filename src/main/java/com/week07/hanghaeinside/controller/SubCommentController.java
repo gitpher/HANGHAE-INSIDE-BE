@@ -1,6 +1,5 @@
 package com.week07.hanghaeinside.controller;
 
-import com.week07.hanghaeinside.domain.subcomment.dto.SubCommentListResponseDto;
 import com.week07.hanghaeinside.domain.subcomment.dto.SubCommentPasswordDto;
 import com.week07.hanghaeinside.domain.subcomment.dto.SubCommentRequestDto;
 import com.week07.hanghaeinside.domain.subcomment.dto.SubCommentResponseDto;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -26,8 +26,8 @@ public class SubCommentController {
     //대댓글 조회
     @GetMapping("/api/subcomments")
     public ResponseEntity<?> getSubComment(@RequestParam("commentId") Long commentId) {
-        SubCommentListResponseDto subCommentListResponseDto = subCommentService.getSubComment(commentId);
-        return ResponseEntity.ok().body(subCommentListResponseDto);
+        List<SubCommentResponseDto> subCommentResponseDtoList = subCommentService.getSubComment(commentId);
+        return ResponseEntity.ok().body(subCommentResponseDtoList);
     }
 
     //대댓글 수정

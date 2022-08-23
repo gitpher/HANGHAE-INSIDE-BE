@@ -17,7 +17,7 @@ public class CommentResponseDto {
     private Long id;
     private Long postId;
     private String nickname;
-    private String password;
+//    private String password;
     @Lob
     private String content;
     private LocalDateTime createdAt;

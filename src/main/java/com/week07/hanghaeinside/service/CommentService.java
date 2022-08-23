@@ -1,7 +1,6 @@
 package com.week07.hanghaeinside.service;
 
 import com.week07.hanghaeinside.domain.comment.Comment;
-import com.week07.hanghaeinside.domain.comment.dto.CommentListResponseDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentPasswordDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentRequestDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentResponseDto;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,15 +38,25 @@ public class CommentService {
     }
 
     //댓글 조회 메소드(특정 게시글의 댓글 목록 전체 조회)
-    public CommentListResponseDto getComment(Long postId) {
+    public List<CommentResponseDto> getComment(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다.")
         );
         List<Comment> commentList = commentRepository.findAllByPostId(postId);
-
-        return CommentListResponseDto.builder()
-                .commentList(commentList)
-                .build();
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for(Comment comment : commentList){
+            commentResponseDtoList.add(
+                    CommentResponseDto.builder()
+                            .id(comment.getId())
+                            .postId(postId)
+                            .nickname(comment.getNickname())
+                            .content(comment.getContent())
+                            .createdAt(comment.getCreatedAt())
+                            .modifiedAt(comment.getModifiedAt())
+                            .build()
+            );
+        }
+        return commentResponseDtoList;
     }
 
     //댓글 업데이트 메소드
@@ -66,21 +76,21 @@ public class CommentService {
     }
 
     //댓글 삭제 메소드
-    public void deleteComment(Long commentId, CommentPasswordDto commentPasswordDto){
+    public void deleteComment(Long commentId, CommentPasswordDto commentPasswordDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                ()-> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
         );
-        if(!comment.getPassword().equals(commentPasswordDto.getPassword())){
+        if (!comment.getPassword().equals(commentPasswordDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         commentRepository.delete(comment);
     }
 
     //댓글 비밀번호 확인 메소드
-    public boolean checkCommentPassword(Long commentId, CommentPasswordDto commentPasswordDto){
-      Comment comment =  commentRepository.findById(commentId).orElseThrow(
-              ()-> new IllegalArgumentException("존재하지 않는 댓글입니다.")
-      );
+    public boolean checkCommentPassword(Long commentId, CommentPasswordDto commentPasswordDto) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+        );
         return comment.getPassword().equals(commentPasswordDto.getPassword());
     }
 
@@ -90,7 +100,7 @@ public class CommentService {
                 .id(comment.getId())
                 .postId(comment.getPost().getId())
                 .nickname(comment.getNickname())
-                .password(comment.getPassword())
+//                .password(comment.getPassword())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())

@@ -16,7 +16,7 @@ public class SubCommentResponseDto {
     //subcommentId
     private Long id;
     private String nickname;
-    private String password;
+//    private String password;
     private Long commentId;
     @Lob
     private String content;

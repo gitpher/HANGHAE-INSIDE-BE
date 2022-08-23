@@ -1,6 +1,5 @@
 package com.week07.hanghaeinside.controller;
 
-import com.week07.hanghaeinside.domain.comment.dto.CommentListResponseDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentPasswordDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentRequestDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentResponseDto;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -26,8 +26,8 @@ public class CommentController {
     //댓글 조회
     @GetMapping("api/comments")
     public ResponseEntity<?> getComment(@RequestParam("postId") Long postId) {
-        CommentListResponseDto commentListResponseDto = commentService.getComment(postId);
-        return ResponseEntity.ok().body(commentListResponseDto);
+        List<CommentResponseDto> commentResponseDtoList = commentService.getComment(postId);
+        return ResponseEntity.ok().body(commentResponseDtoList);
     }
 
     //댓글 수정
