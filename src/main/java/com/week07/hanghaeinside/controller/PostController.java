@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -67,10 +68,19 @@ public class PostController {
         return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
     }
 
+/*
+    // 개념글 조회 (페이지네이션 적용)
     @GetMapping("/posts/top")
     public ResponseEntity<?> findAllPostTop(@PageableDefault(size = 12) Pageable pageable) {
         Page<PostResponseDto> postResponseDtos = postService.findAllPostTop(pageable);
         return ResponseEntity.ok().body(postResponseDtos);
+    }
+*/
+
+    @GetMapping("/posts/top")
+    public ResponseEntity<?> findAllPostTop() {
+        List<PostResponseDto> postResponseDtoList = postService.findAllPostTop();
+        return ResponseEntity.ok().body(postResponseDtoList);
     }
 
 }

@@ -157,7 +157,8 @@ public class PostService {
         return optionalPost.orElseThrow(() -> new IllegalArgumentException("등록되지 않은 게시물입니다."));
     }
 
-    // 개념글 조회
+/*
+    // 개념글 조회 (페이지네이션 적용)
     public Page<PostResponseDto> findAllPostTop(Pageable pageable) {
         int heartCnt = 10;
 
@@ -165,12 +166,24 @@ public class PostService {
 
         return convertToResponseDto(postList);
     }
+*/
 
+    // 개념글 조회
+    public List<PostResponseDto> findAllPostTop() {
+        int heartCnt = 10;
+
+        List<Post> postList = postRepository.findAllByHeartCntGreaterThanOrderByCreatedAtDesc(heartCnt);
+
+        return convertToResponseDto(postList);
+    }
+
+
+/*
     private Page<PostResponseDto> convertToResponseDto(Page<Post> postList) {
-        List<PostResponseDto> posts = new ArrayList<>();
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         for (Post post : postList) {
-            posts.add(
+            postResponseDtos.add(
                     PostResponseDto.builder()
                             .postId(post.getId())
                             .nickname(post.getCreatedById())
@@ -183,7 +196,28 @@ public class PostService {
                             .build()
             );
         }
-        return new PageImpl(posts, postList.getPageable(), postList.getTotalElements());
+        return new PageImpl(postResponseDtos, postList.getPageable(), postList.getTotalElements());
+    }
+ */
+
+    private List<PostResponseDto> convertToResponseDto(List<Post> postList) {
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        for (Post post : postList) {
+            postResponseDtos.add(
+                    PostResponseDto.builder()
+                            .postId(post.getId())
+                            .nickname(post.getCreatedById())
+                            .title(post.getTitle())
+                            .postImg(post.getPostImg())
+                            .createAt(post.getCreatedAt())
+                            .viewCnt(post.getViewCnt())
+                            .heartCnt(post.getHeartCnt())
+                            .unHeartCnt(post.getUnHeartCnt())
+                            .build()
+            );
+        }
+        return postResponseDtos;
     }
 
 }

@@ -8,11 +8,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
 
-    Page<Post> findAllByHeartCntGreaterThanOrderByCreatedAtDesc(int heartCnt, Pageable pageable);
+//    Page<Post> findAllByHeartCntGreaterThanOrderByCreatedAtDesc(int heartCnt, Pageable pageable);
+
+    List<Post> findAllByHeartCntGreaterThanOrderByCreatedAtDesc(int heartCnt);
 
 
     @Modifying
