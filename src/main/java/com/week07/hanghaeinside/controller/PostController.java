@@ -27,6 +27,7 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
+
     // 게시글 생성
     @PostMapping("/posts")
     public ResponseEntity<?> createPost(@ModelAttribute PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) throws IOException {
@@ -52,18 +53,24 @@ public class PostController {
         return new ResponseEntity<>(Map.of("msg", deleteMsg), HttpStatus.OK);
     }
 
+    // 게시글 전체 조회 - (페이지네이션 적용)
+//    @GetMapping("/posts")
+//    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
+//        // size = -한 페이지당 보여질 개수
+//        Page<PostResponseDto> posts = postService.findAllPost(pageable);
+//        return new ResponseEntity<>(posts, HttpStatus.OK);
+//    }
+
     // 게시글 전체 조회
     @GetMapping("/posts")
-    public ResponseEntity<?> findAllPost(@PageableDefault(size = 12) Pageable pageable){
-        // size = -한 페이지당 보여질 개수
-        Page<PostResponseDto> posts = postService.findAllPost(pageable);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<?> findAllpost() {
+        return ResponseEntity.ok().body(postService.findAllPost());
     }
 
 
     // 게시글 상세 조회
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<?> findPost(@PathVariable Long postId){
+    public ResponseEntity<?> findPost(@PathVariable Long postId) {
         postService.updateView(postId); // view ++
         return new ResponseEntity<>(postService.findPost(postId), HttpStatus.OK);
     }

@@ -47,7 +47,7 @@ public class PostService {
 
         MultipartFile multipartFile = postRequestDto.getPostImg();
 
-        String imgUrl=null;
+        String imgUrl = null;
 
         if (!multipartFile.isEmpty()) {
             String fileName = CommonUtils.buildFileName(multipartFile.getOriginalFilename());   // 파일이름
@@ -88,21 +88,42 @@ public class PostService {
 
     }
 
-    // 전체 조회
-    public Page<PostResponseDto> findAllPost(Pageable pageable) {
+    // 게시글 전체 조회(페이지네이션 적용)
+//    public Page<PostResponseDto> findAllPost(Pageable pageable) {
+//
+//        Page<Post> postList = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+//
+//        Page<PostResponseDto> postResponseDtos = convertToPostResponseDto(postList);
+//
+//        return postResponseDtos;
+//
+//    }
 
-        Page<Post> postList = postRepository.findAllByOrderByCreatedAtDesc(pageable);
-
-        Page<PostResponseDto> postResponseDtos = convertToPostResponseDto(postList);
-
-        return postResponseDtos;
-
+    // 게시글 전체 조회
+    public List<PostResponseDto> findAllPost() {
+        List<Post> postList = postRepository.findAllByOrderByCreatedAtDesc();
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        for (Post post : postList) {
+            postResponseDtoList.add(
+                    PostResponseDto.builder()
+                            .postId(post.getId())
+                            .nickname(post.getCreatedById())
+                            .title(post.getTitle())
+                            .postImg(post.getPostImg())
+                            .createAt(post.getCreatedAt())
+                            .viewCnt(post.getViewCnt())
+                            .heartCnt(post.getHeartCnt())
+                            .unHeartCnt(post.getUnHeartCnt())
+                            .build()
+            );
+        }
+        return postResponseDtoList;
     }
 
     private Page<PostResponseDto> convertToPostResponseDto(Page<Post> postList) {
         List<PostResponseDto> posts = new ArrayList<>();
 
-        for (Post post : postList){
+        for (Post post : postList) {
             posts.add(
                     PostResponseDto.builder()
                             .postId(post.getId())
@@ -118,7 +139,7 @@ public class PostService {
             );
         }
 
-        return new PageImpl<>(posts,postList.getPageable(),postList.getTotalElements());
+        return new PageImpl<>(posts, postList.getPageable(), postList.getTotalElements());
     }
 
     // 상세 조회

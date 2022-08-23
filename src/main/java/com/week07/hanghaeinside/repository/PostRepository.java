@@ -11,7 +11,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    // 게시글 전체 조회(페이지네이션 적용)
+//    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    // 게시글 전체 조회
+    List<Post> findAllByOrderByCreatedAtDesc();
 
 
 //    Page<Post> findAllByHeartCntGreaterThanOrderByCreatedAtDesc(int heartCnt, Pageable pageable);
