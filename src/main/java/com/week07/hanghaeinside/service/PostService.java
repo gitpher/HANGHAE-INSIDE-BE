@@ -241,4 +241,25 @@ public class PostService {
         return postResponseDtos;
     }
 
+
+    public Object myInfoPost(Member member) {
+        List<Post> postList = postRepository.findByCreatedById(member.getMemberNickname());
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        for (Post post : postList) {
+            postResponseDtoList.add(
+                    PostResponseDto.builder()
+                            .postId(post.getId())
+                            .nickname(post.getCreatedById())
+                            .title(post.getTitle())
+                            .postImg(post.getPostImg())
+                            .createAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .viewCnt(post.getViewCnt())
+                            .heartCnt(post.getHeartCnt())
+                            .unHeartCnt(post.getUnHeartCnt())
+                            .build()
+            );
+        }
+        return postResponseDtoList;
+
+    }
 }

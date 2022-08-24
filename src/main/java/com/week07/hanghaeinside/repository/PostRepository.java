@@ -27,4 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("update Post p set p.viewCnt = p.viewCnt + 1 where p.id = :id")
     int updateView(@Param("id") Long id);
 
+    List<Post> findByCreatedById(String memberNickname);
+
+
 }

@@ -84,10 +84,19 @@ public class PostController {
     }
 */
 
+    // best글
     @GetMapping("/posts/top")
     public ResponseEntity<?> findAllPostTop() {
         List<PostResponseDto> postResponseDtoList = postService.findAllPostTop();
         return ResponseEntity.ok().body(postResponseDtoList);
+    }
+
+    // mypage 게시글
+    @GetMapping("/myinfo")
+    public ResponseEntity<?> myInfoPost(@AuthenticationPrincipal UserDetails userDetails) {
+        Member member = ((UserDetailsImpl) userDetails).getMember();
+
+        return ResponseEntity.ok().body(postService.myInfoPost(member));
     }
 
 }
