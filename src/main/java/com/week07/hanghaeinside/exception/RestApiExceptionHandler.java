@@ -9,8 +9,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class RestApiExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<?> handleIllegalException(IllegalArgumentException ex){
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex){
         return ResponseEntity
                 .badRequest()
                 .body(Map.entry("msg", ex.getMessage()));
