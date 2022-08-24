@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -49,4 +50,5 @@ public class CommentController {
     public ResponseEntity<Boolean> checkCommentPassword(@PathVariable Long commentId, @RequestBody CommentPasswordDto commentPasswordDto) {
         return ResponseEntity.ok().body(commentService.checkCommentPassword(commentId, commentPasswordDto));
     }
+
 }

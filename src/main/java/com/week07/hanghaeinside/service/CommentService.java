@@ -4,13 +4,16 @@ import com.week07.hanghaeinside.domain.comment.Comment;
 import com.week07.hanghaeinside.domain.comment.dto.CommentPasswordDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentRequestDto;
 import com.week07.hanghaeinside.domain.comment.dto.CommentResponseDto;
+import com.week07.hanghaeinside.domain.member.Member;
 import com.week07.hanghaeinside.domain.post.Post;
+import com.week07.hanghaeinside.jwt.TokenProvider;
 import com.week07.hanghaeinside.repository.CommentRepository;
 import com.week07.hanghaeinside.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final TokenProvider tokenProvider;
 
     //댓글 작성 메소드
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto) {
@@ -45,12 +49,13 @@ public class CommentService {
         );
         List<Comment> commentList = commentRepository.findAllByPostId(postId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
                             .id(comment.getId())
                             .postId(postId)
                             .nickname(comment.getNickname())
+                            .password(comment.getPassword())
                             .content(comment.getContent())
                             .createdAt(comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .modifiedAt(comment.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
@@ -95,17 +100,25 @@ public class CommentService {
         return comment.getPassword().equals(commentPasswordDto.getPassword());
     }
 
+
     //공통 작업(responseDto build 작업) 메소드화
     private CommentResponseDto buildCommentResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .postId(comment.getPost().getId())
                 .nickname(comment.getNickname())
-//                .password(comment.getPassword())
+                .password(comment.getPassword())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .modifiedAt(comment.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
+    }
+
+    public Member validateMember(HttpServletRequest httpServletRequest) {
+        if (!tokenProvider.validateToken(httpServletRequest.getHeader("RefreshToken"))) {
+            return null;
+        }
+        return tokenProvider.getMemberFromAuthentication();
     }
 }
 
