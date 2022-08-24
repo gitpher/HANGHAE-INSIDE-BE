@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +52,8 @@ public class CommentService {
                             .postId(postId)
                             .nickname(comment.getNickname())
                             .content(comment.getContent())
-                            .createdAt(comment.getCreatedAt())
-                            .modifiedAt(comment.getModifiedAt())
+                            .createdAt(comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                            .modifiedAt(comment.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .build()
             );
         }
@@ -102,8 +103,8 @@ public class CommentService {
                 .nickname(comment.getNickname())
 //                .password(comment.getPassword())
                 .content(comment.getContent())
-                .createdAt(comment.getCreatedAt())
-                .modifiedAt(comment.getModifiedAt())
+                .createdAt(comment.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                .modifiedAt(comment.getModifiedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .build();
     }
 }

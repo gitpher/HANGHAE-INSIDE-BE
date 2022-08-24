@@ -20,6 +20,6 @@ public class CommentResponseDto {
 //    private String password;
     @Lob
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private String createdAt;
+    private String modifiedAt;
 }

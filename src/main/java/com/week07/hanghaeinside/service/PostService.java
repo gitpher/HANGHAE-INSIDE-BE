@@ -16,13 +16,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +110,7 @@ public class PostService {
                             .nickname(post.getCreatedById())
                             .title(post.getTitle())
                             .postImg(post.getPostImg())
-                            .createAt(post.getCreatedAt())
+                            .createAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .viewCnt(post.getViewCnt())
                             .heartCnt(post.getHeartCnt())
                             .unHeartCnt(post.getUnHeartCnt())
@@ -130,7 +130,7 @@ public class PostService {
                             .nickname(post.getCreatedById())
                             .title(post.getTitle())
                             .postImg(post.getPostImg())
-                            .createAt(post.getCreatedAt())
+                            .createAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .heartCnt(post.getHeartCnt())
                             .viewCnt(post.getViewCnt())
                             .unHeartCnt(post.getUnHeartCnt())
@@ -159,7 +159,7 @@ public class PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postImg(post.getPostImg())
-                .createAt(post.getCreatedAt())
+                .createAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .heartCnt(post.getHeartCnt())
                 .viewCnt(post.getViewCnt())
                 .unHeartCnt(post.getUnHeartCnt())
@@ -231,7 +231,7 @@ public class PostService {
                             .nickname(post.getCreatedById())
                             .title(post.getTitle())
                             .postImg(post.getPostImg())
-                            .createAt(post.getCreatedAt())
+                            .createAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                             .viewCnt(post.getViewCnt())
                             .heartCnt(post.getHeartCnt())
                             .unHeartCnt(post.getUnHeartCnt())

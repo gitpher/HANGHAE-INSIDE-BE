@@ -16,13 +16,9 @@ public class PostResponseDto {
     private String nickname;
     private String title;
     private String postImg;
-    private LocalDateTime createAt;
+    private String createAt;
     private int viewCnt;
     private int heartCnt;
     private int unHeartCnt;
-
-
-
-
 
 }
