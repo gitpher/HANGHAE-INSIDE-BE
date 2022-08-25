@@ -43,7 +43,7 @@ public class HeartService {
         }
         Optional<Heart> optionalHeart = heartRepository.findByPostIdAndHeartBy(postId, member.getMemberNickname());
         if (optionalHeart.isPresent()) {
-            return ResponseEntity.ok().body(Map.of("msg","이미 추천을 했습니다."));
+            return ResponseEntity.ok().body(Map.of("postId",postId,"msg","이미 추천을 했습니다."));
         } else {
             Heart heart = Heart.builder()
                     .post(post)
@@ -54,7 +54,7 @@ public class HeartService {
         }
         int heartCnt = heartRepository.countAllByPostId(post.getId());
         post.updateHeart(heartCnt);
-        return ResponseEntity.ok().body(Map.of("msg","추천이 완료되었습니다."));
+        return ResponseEntity.ok().body(Map.of("postId",postId,"msg","추천이 완료되었습니다."));
     }
 
     @Transactional
@@ -74,7 +74,7 @@ public class HeartService {
         }
         Optional<UnHeart> optionalUnHeart = unHeartRepository.findByPostIdAndUnHeartBy(postId, member.getMemberNickname());
         if(optionalUnHeart.isPresent()){
-            return ResponseEntity.ok().body(Map.of("msg","이미 비추천을 했습니다."));
+            return ResponseEntity.ok().body(Map.of("postId",postId,"msg","이미 비추천을 했습니다."));
         }else{
             UnHeart unHeart = UnHeart.builder()
                     .post(post)
@@ -85,7 +85,7 @@ public class HeartService {
         }
         int unHeartCnt = unHeartRepository.countAllByPostId(post.getId());
         post.updateUnHeart(unHeartCnt);
-        return ResponseEntity.ok().body(Map.of("msg","비추천이 완료되었습니다."));
+        return ResponseEntity.ok().body(Map.of("postId",postId,"msg","비추천이 완료되었습니다."));
     }
 
 
