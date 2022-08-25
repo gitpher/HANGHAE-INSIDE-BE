@@ -38,10 +38,17 @@ public class CommentController {
         return ResponseEntity.ok().body(Map.of("commentId", commentResponseDto.getId(), "msg", "수정이 완료되었습니다."));
     }
 
-    //댓글 삭제
+    //댓글 삭제 - 기존
+//    @DeleteMapping("/api/comments/{commentId}")
+//    public ResponseEntity<?> deleteComment(@PathVariable Long commentId, @RequestBody CommentPasswordDto commentPasswordDto) {
+//        commentService.deleteComment(commentId, commentPasswordDto);
+//        return ResponseEntity.ok().body(Map.of("commentId", commentId, "msg", "삭제 완료되었습니다."));
+//    }
+
+    // 댓글 삭제 - FE요청 ver
     @DeleteMapping("/api/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId, @RequestBody CommentPasswordDto commentPasswordDto) {
-        commentService.deleteComment(commentId, commentPasswordDto);
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
         return ResponseEntity.ok().body(Map.of("commentId", commentId, "msg", "삭제 완료되었습니다."));
     }
 

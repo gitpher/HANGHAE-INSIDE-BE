@@ -81,14 +81,22 @@ public class CommentService {
         return buildCommentResponseDto(comment);
     }
 
-    //댓글 삭제 메소드
-    public void deleteComment(Long commentId, CommentPasswordDto commentPasswordDto) {
+    //댓글 삭제 메소드 - 기존
+//    public void deleteComment(Long commentId, CommentPasswordDto commentPasswordDto) {
+//        Comment comment = commentRepository.findById(commentId).orElseThrow(
+//                () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
+//        );
+//        if (!comment.getPassword().equals(commentPasswordDto.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+//        }
+//        commentRepository.delete(comment);
+//    }
+
+    // 댓글 삭제 메소드 - FE 요청 ver
+    public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다.")
         );
-        if (!comment.getPassword().equals(commentPasswordDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
         commentRepository.delete(comment);
     }
 
