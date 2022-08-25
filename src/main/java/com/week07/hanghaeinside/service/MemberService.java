@@ -70,7 +70,7 @@ public class MemberService {
     @Transactional
     public Long logout(HttpServletRequest httpServletRequest) {
         if (!tokenProvider.validateToken(httpServletRequest.getHeader("RefreshToken"))) {
-            throw new IllegalArgumentException("Token이 유효하지 않습티다.");
+            throw new IllegalArgumentException("Token이 유효하지 않습니다.");
         }
         Member member = tokenProvider.getMemberFromAuthentication();
         if (null == member) {
