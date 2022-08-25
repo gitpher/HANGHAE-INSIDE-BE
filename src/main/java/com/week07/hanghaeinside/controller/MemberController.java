@@ -49,7 +49,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(Map.of("nickname", nickname));
+                .body(Map.of("nickname", nickname, "msg", true));
     }
 
     @DeleteMapping("/logout")
